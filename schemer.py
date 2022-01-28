@@ -1,3 +1,6 @@
+from table import Table
+from column import Column
+
 class Database:
     conn = None
     cursor = None
@@ -39,36 +42,3 @@ class Database:
             all_tables.append(_table)
 
         self.tables = all_tables
-
-            
-class Table:
-    name = ""
-    columns = []
-
-    def __init__(self, name, columns):
-        self.name = name
-        self.columns = columns
-
-    def __repr__(self) -> str:
-        s = ""
-        return s.join(f"{self.name}:\n {repr(self.columns)}\n")
-
-class Column:
-    name = ""
-    type = ""
-    null = False
-    key_type = ""
-    default = ""
-    extra = ""
-
-    def __init__(self, name: str, type: str, null: bool, key_type: str,
-                 default: str, extra: str):
-        self.name = name
-        self.type = type
-        self.null = null
-        self.key_type = key_type
-        self.default = default
-        self.extra = extra
-
-    def __repr__(self) -> str:
-        return f"{self.name} {self.type} {self.null} {self.key_type} {self.default} {self.extra}"
