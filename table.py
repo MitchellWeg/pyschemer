@@ -1,3 +1,5 @@
+import prettytable
+
 class Table:
     name = ""
     columns = []
@@ -6,6 +8,9 @@ class Table:
         self.name = name
         self.columns = columns
 
-    def __repr__(self) -> str:
-        s = ""
-        return s.join(f"{self.name}:\n {repr(self.columns)}\n")
+    def print(self):
+        x = prettytable.PrettyTable(["Field", "Type", "Null", "Key", "Default", "Extra"])
+        for i in self.columns:
+            x.add_row([i.name, i.type, i.null, i.key_type, i.default, i.extra])
+
+        print(x)

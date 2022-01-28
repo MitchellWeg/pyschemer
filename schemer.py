@@ -23,7 +23,6 @@ class Database:
 
         return self.table_names
 
-
     def describe_tables(self):
         all_tables = []
 
@@ -48,6 +47,6 @@ class Database:
                 col[4],
                 col[5]
             )
-            columns.append(col) 
+            columns.append(column) 
 
         return columns
