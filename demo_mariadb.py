@@ -1,23 +1,22 @@
 import mariadb
 import sys
-from schemer import Database
+from schemer.schemer import Database
 
 def main():
     try:
         conn = mariadb.connect(
-            user="foo",
+            user="mitchell",
             password="foo",
             host="localhost",
             port=3306,
-            database="my-database"
+            database="TinderForCats"
         )
     except mariadb.Error as e:
-        print(f"Error connecting to MariaDB Platform: {e}")
+        # print(f"Error connecting to MariaDB Platform: {e}")
         sys.exit(1)
 
-    db = Database(conn)
+    db = Database(conn, "TinderForCats")
     db.draw()
-    print(db.tables)
 
 if __name__ == "__main__":
     main()
