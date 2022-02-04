@@ -9,10 +9,10 @@ def main():
             password="foo",
             host="localhost",
             port=3306,
-            database="TinderForCats"
+            database="foo"
         )
     except mariadb.Error as e:
-        # print(f"Error connecting to MariaDB Platform: {e}")
+        print(f"Error connecting to MariaDB Platform: {e}")
         sys.exit(1)
 
     db = Database(conn, "TinderForCats")
