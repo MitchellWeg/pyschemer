@@ -1,6 +1,7 @@
 import json
 from .table import Table
 from .column import Column
+from .relationships import Relationship
 
 class Database:
     database_name = ""
@@ -19,6 +20,8 @@ class Database:
         self.parse_tables()
         self.describe_tables()
         self.get_relationships()
+
+        print(self.to_json())
 
     def get_tables(self):
         self.cursor.execute("SHOW TABLES;")
@@ -60,18 +63,34 @@ class Database:
         self.cursor.execute(f"""
             SELECT CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE CONSTRAINT_SCHEMA = '{self.database_name}' AND CONSTRAINT_NAME <> 'PRIMARY';
         """)
-        self.parse_relationships()
+        self.relationships = self.parse_relationships()
          
-    def parse_relationships(self):
+    def parse_relationships(self) -> [Relationship]:
+        out = []
         info_schema = self.cursor.fetchall()
-        for i in info_schema:
-            pass
+        for col in info_schema:
+            if all(col):
+                out.append(Relationship(
+                    col[0],
+                    col[1],
+                    col[2],
+                    col[3],
+                    col[4]
+                ))
+
+        return out
         
     def to_json(self) -> str:
-        all_tables = [x.to_json() for x in self.tables]
-        tables = self.to_dict('tables', all_tables)
+        out = {}
+        all_tables = self.to_list(self.tables)
+        all_relationships = self.to_list(self.relationships)
 
-        return json.dumps(tables)
+        out['tables'] = all_tables
+        out['relationships'] = all_relationships
+        out['rankAdjustments'] = ""
+        out['label'] = ""
 
-    def to_dict(self, key, input) -> {}:
-        return {key: input}
+        return json.dumps(out)
+
+    def to_list(self, input) -> []:
+        return [x.to_json() for x in input]

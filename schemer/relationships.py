@@ -12,5 +12,10 @@ class Relationship:
         self.referenced_table_name = ref_table
         self.referenced_column_name = ref_column
 
+    def to_json(self):
+        return self.__repr__()
+
+    def __repr__(self):
+        return f"{self.table_name}:{self.column_name} 1--1 {self.referenced_table_name}:{self.referenced_column_name}"
 
 
