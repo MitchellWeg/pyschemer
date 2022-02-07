@@ -1,3 +1,5 @@
+import json
+
 class Column:
     name = ""
     type = ""
@@ -14,6 +16,14 @@ class Column:
         self.key_type = key_type
         self.default = default
         self.extra = extra
+
+    # TODO:
+    # PK's are noted as: "*<column_name>",
+    # and FK's are noted as: "+<column_name>"
+    def to_json(self):
+        return {
+            self.name: self.type
+        }
 
     def __repr__(self) -> str:
         return f"{self.name} {self.type} {self.null} {self.key_type} {self.default} {self.extra}"

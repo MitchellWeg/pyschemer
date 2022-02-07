@@ -1,3 +1,4 @@
+import json
 from .table import Table
 from .column import Column
 
@@ -64,5 +65,13 @@ class Database:
     def parse_relationships(self):
         info_schema = self.cursor.fetchall()
         for i in info_schema:
-            print(i)
+            pass
+        
+    def to_json(self) -> str:
+        all_tables = [x.to_json() for x in self.tables]
+        tables = self.to_dict('tables', all_tables)
 
+        return json.dumps(tables)
+
+    def to_dict(self, key, input) -> {}:
+        return {key: input}

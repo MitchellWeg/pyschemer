@@ -1,4 +1,5 @@
 import prettytable
+import json
 
 class Table:
     name = ""
@@ -7,6 +8,16 @@ class Table:
     def __init__(self, name, columns):
         self.name = name
         self.columns = columns
+
+    def to_json(self):
+        out = {}
+
+        for x in self.columns:
+            out[x.name] = x.type
+
+        return {
+            f"{self.name}": out
+        }
 
     def print(self):
         x = prettytable.PrettyTable(["Field", "Type", "Null", "Key", "Default", "Extra"])
