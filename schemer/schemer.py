@@ -39,7 +39,7 @@ class Database:
             _columns = self.parse_describe()
 
             _table = Table(table, _columns)
-            all_tables.append(_table)
+            all_tables.append(_table.to_json())
 
         self.tables = all_tables
 
@@ -82,13 +82,14 @@ class Database:
         
     def to_json(self) -> str:
         out = {}
-        all_tables = self.to_list(self.tables)
         all_relationships = self.to_list(self.relationships)
 
-        out['tables'] = all_tables
-        out['relationships'] = all_relationships
-        out['rankAdjustments'] = ""
-        out['label'] = ""
+        out = {
+            "tables" : self.tables,
+            "relations" : all_relationships,
+            "rankAdjustments" : "",
+            "label" : ""
+        }
 
         return json.dumps(out)
 
