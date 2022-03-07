@@ -17,16 +17,17 @@ class Database:
 
     def draw(self):
         self.get_tables()
-        self.parse_tables()
+        self.get_table_names()
         self.describe_tables()
+        # self.parse_tables()
         self.get_relationships()
 
         print(self.to_json())
 
-    def get_tables(self):
-        self.cursor.execute("SHOW TABLES;")
+    def get_tables(self, q="SHOW TABLES;"):
+        self.cursor.execute(q)
 
-    def parse_tables(self) -> [str]:
+    def get_table_names(self) -> [str]:
         self.table_names = [t[0] for t in self.cursor.fetchall()]
 
         return self.table_names
@@ -36,12 +37,17 @@ class Database:
 
         for table in self.table_names:
             self.cursor.execute(f"DESCRIBE {table}")
-            _columns = self.parse_describe()
-
-            _table = Table(table, _columns)
-            all_tables.append(_table.to_json())
+            _table = self.cursor.fetchall()
+            all_tables.append(_table)
 
         self.tables = all_tables
+
+    def parse_tables(self):
+        out = []
+        for table in self.tables:
+            _columns = self.parse_describe()
+            _table = Table(table, _columns)
+            out.append(_table.to_json())
 
     def parse_describe(self):
         columns = []
@@ -59,10 +65,12 @@ class Database:
 
         return columns
 
-    def get_relationships(self):
-        self.cursor.execute(f"""
-            SELECT CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE CONSTRAINT_SCHEMA = '{self.database_name}' AND CONSTRAINT_NAME <> 'PRIMARY';
-        """)
+    def get_relationships(self, q=None):
+        if q is None:
+            q = "SELECT CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE CONSTRAINT_SCHEMA = '{self.database_name}' AND CONSTRAINT_NAME <> 'PRIMARY';"
+
+        self.cursor.execute(q)
+            
         self.relationships = self.parse_relationships()
          
     def parse_relationships(self) -> [Relationship]:
