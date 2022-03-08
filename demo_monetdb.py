@@ -6,13 +6,13 @@ class Monet(Database):
         return super().get_tables(q="SELECT name FROM sys.tables WHERE system=false")
 
     def describe_tables(self):
-        all_tables = []
+        all_tables = {}
 
         # TODO: the schema here needs to be fixed.
         for table in self.table_names:
             self.cursor.execute(f"SELECT name, type FROM describe_columns('sys', '{table}')")
             _table = self.cursor.fetchall()
-            all_tables.append(_table)
+            all_tables[table] = dict(_table)
 
         self.tables = all_tables
 
