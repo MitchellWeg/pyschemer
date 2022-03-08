@@ -19,7 +19,6 @@ class Database:
         self.get_tables()
         self.get_table_names()
         self.describe_tables()
-        # self.parse_tables()
         self.get_relationships()
 
         print(self.to_json())
@@ -33,12 +32,16 @@ class Database:
         return self.table_names
 
     def describe_tables(self):
-        all_tables = []
+        all_tables = {}
 
         for table in self.table_names:
             self.cursor.execute(f"DESCRIBE {table}")
             _table = self.cursor.fetchall()
-            all_tables.append(_table)
+            cols = {}
+            for column in _table:
+                cols[column[0]] = column[1]
+
+            all_tables[table] = cols
 
         self.tables = all_tables
 

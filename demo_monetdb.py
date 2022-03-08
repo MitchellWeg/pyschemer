@@ -12,7 +12,13 @@ class Monet(Database):
         for table in self.table_names:
             self.cursor.execute(f"SELECT name, type FROM describe_columns('sys', '{table}')")
             _table = self.cursor.fetchall()
-            all_tables[table] = dict(_table)
+
+            cols = {}
+            for column in _table:
+                cols[column[0]] = column[1]
+
+            all_tables[table] = cols
+
 
         self.tables = all_tables
 
