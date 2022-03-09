@@ -1,2 +1,4 @@
 demos/
 __pycache__/
+build/
+schemer.egg-info/
