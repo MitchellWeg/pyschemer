@@ -1,4 +1,6 @@
+from erdot.__main__ import splitJSONIntoChuncks, generateDotCode
 import json
+import pygraphviz as pgv
 from .table import Table
 from .column import Column
 from .relationships import Relationship
@@ -15,13 +17,26 @@ class Database:
         self.cursor = conn.cursor()
         self.database_name = db_name
 
-    def draw(self):
+    def draw(self, filename="out"):
         self.get_tables()
         self.get_table_names()
         self.describe_tables()
         self.get_relationships()
 
-        print(self.to_json())
+        dot_code = self.generate_dot_code(self.to_json())
+
+        G = pgv.AGraph(string=dot_code)
+        schema_drawing = G.draw(path=None, format='jpeg', prog='dot')
+
+        with open(f'{filename}.jpg', 'wb') as outfile:
+            outfile.write(schema_drawing)
+
+
+    def generate_dot_code(self, db_json) -> str:
+        json_loaded = json.loads(db_json)
+        chunked_json = splitJSONIntoChuncks(json_loaded)
+        string_gen = generateDotCode(chunked_json)
+        return string_gen
 
     def get_tables(self, q="SHOW TABLES;"):
         self.cursor.execute(q)

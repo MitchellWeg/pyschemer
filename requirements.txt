@@ -1,4 +1,13 @@
 click==8.0.3
+distlib==0.3.4
+easydict==1.9
 ERDot==2.3.0
+filelock==3.6.0
+future==0.18.2
+platformdirs==2.5.1
 prettytable==3.0.0
+pygraphviz==1.9
+pyparsing==3.0.7
+six==1.16.0
+virtualenv==20.13.1
 wcwidth==0.2.5

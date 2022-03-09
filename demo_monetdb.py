@@ -35,7 +35,7 @@ def main():
     )
 
     db = Monet(conn, "foo")
-    db.draw()
+    db.draw("monet_out")
 
 
 if __name__ == '__main__':
