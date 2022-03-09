@@ -5,18 +5,18 @@ from schemer.schemer import Database
 def main():
     try:
         conn = mariadb.connect(
-            user="mitchell",
-            password="foo",
-            host="localhost",
+            user="root",
+            password="secret",
+            host="127.0.0.1",
             port=3306,
-            database="foo"
+            database="swypurr"
         )
     except mariadb.Error as e:
         print(f"Error connecting to MariaDB Platform: {e}")
         sys.exit(1)
 
     db = Database(conn, "TinderForCats")
-    db.draw()
+    db.draw('out_maria')
 
 if __name__ == "__main__":
     main()
