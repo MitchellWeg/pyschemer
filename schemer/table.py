@@ -1,5 +1,5 @@
 import prettytable
-import json
+
 
 class Table:
     name = ""
@@ -20,7 +20,9 @@ class Table:
         }
 
     def print(self):
-        x = prettytable.PrettyTable(["Field", "Type", "Null", "Key", "Default", "Extra"])
+        x = prettytable.PrettyTable(
+            ["Field", "Type", "Null", "Key", "Default", "Extra"]
+        )
         for i in self.columns:
             x.add_row([i.name, i.type, i.null, i.key_type, i.default, i.extra])
 

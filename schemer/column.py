@@ -1,5 +1,3 @@
-import json
-
 class Column:
     name = ""
     type = ""
@@ -24,6 +22,3 @@ class Column:
         return {
             self.name: self.type
         }
-
-    def __repr__(self) -> str:
-        return f"{self.name} {self.type} {self.null} {self.key_type} {self.default} {self.extra}"
