@@ -5,6 +5,7 @@ from .table import Table
 from .column import Column
 from .relationships import Relationship
 
+
 class Database:
     database_name = ""
     conn = None
@@ -30,7 +31,6 @@ class Database:
 
         with open(f'{filename}.jpg', 'wb') as outfile:
             outfile.write(schema_drawing)
-
 
     def generate_dot_code(self, db_json) -> str:
         json_loaded = json.loads(db_json)
@@ -79,18 +79,23 @@ class Database:
                 col[4],
                 col[5]
             )
-            columns.append(column) 
+            columns.append(column)
 
         return columns
 
     def get_relationships(self, q=None):
         if q is None:
-            q = "SELECT CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE CONSTRAINT_SCHEMA = '{self.database_name}' AND CONSTRAINT_NAME <> 'PRIMARY';"
+            q = ("SELECT CONSTRAINT_NAME, TABLE_NAME,"
+                 "COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME",
+                 "FROM information_schema.KEY_COLUMN_USAGE",
+                 "WHERE CONSTRAINT_SCHEMA = '{self.database_name}'",
+                 "AND CONSTRAINT_NAME <> 'PRIMARY';"
+                 )
 
         self.cursor.execute(q)
-            
+
         self.relationships = self.parse_relationships()
-         
+
     def parse_relationships(self) -> [Relationship]:
         out = []
         info_schema = self.cursor.fetchall()
@@ -105,16 +110,16 @@ class Database:
                 ))
 
         return out
-        
+
     def to_json(self) -> str:
         out = {}
         all_relationships = self.to_list(self.relationships)
 
         out = {
-            "tables" : self.tables,
-            "relations" : all_relationships,
-            "rankAdjustments" : "",
-            "label" : ""
+            "tables": self.tables,
+            "relations": all_relationships,
+            "rankAdjustments": "",
+            "label": ""
         }
 
         return json.dumps(out)
