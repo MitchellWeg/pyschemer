@@ -2,22 +2,29 @@ import pymonetdb
 from schemer.schemer import Database
 
 class Monet(Database):
+    schema = ""
+
+    def draw(self, schema, filename="out"):
+        self.schema = schema
+
+        return super().draw(filename)
+
     def get_tables(self, q=None):
         return super().get_tables(q="SELECT name FROM sys.tables WHERE system=false")
 
     def describe_tables(self):
         all_tables = {}
 
-        # TODO: the schema here needs to be fixed.
         for table in self.table_names:
-            self.cursor.execute(f"SELECT name, type FROM describe_columns('sys', '{table}')")
+            self.cursor.execute(f"SELECT name, type FROM describe_columns('{self.schema}', '{table}')")
             _table = self.cursor.fetchall()
 
-            cols = {}
-            for column in _table:
-                cols[column[0]] = column[1]
+            if len(_table) > 0:
+                cols = {}
+                for column in _table:
+                    cols[column[0]] = column[1]
 
-            all_tables[table] = cols
+                all_tables[table] = cols
 
 
         self.tables = all_tables
@@ -34,8 +41,9 @@ def main():
         database="demo"
     )
 
-    db = Monet(conn, "foo")
-    db.draw("monet_out")
+    db = Monet(conn=conn, db_name="foo")
+    db.draw("foo", "monet_out_foo")
+    db.draw("bar", "monet_out_bar")
 
 
 if __name__ == '__main__':
