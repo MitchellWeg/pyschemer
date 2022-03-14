@@ -1,4 +1,4 @@
-# Schemer
+# PySchemer
 
 A database schema visualization tool
 
@@ -13,6 +13,10 @@ When you want to implement it for another SQL dialect, some fields might need to
 See the examples directory for a working example for [MonetDB](https://monetdb.org/)
 
 ## Installation
+
+### From pip
+
+`pip install pyschemer`
 
 ### From source
 
