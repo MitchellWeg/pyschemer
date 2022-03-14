@@ -1,14 +1,14 @@
 from setuptools import setup
 
 setup(
-    name='schemer',
-    version='0.1.0',    
+    name='pyschemer',
+    version='1.0.0',    
     description='A database visualization tool',
     url='https://github.com/MitchellWeg/schemer',
     author='Mitchell Weggemans',
     author_email='mitchell.w@live.nl',
     license='BSD 2-clause',
-    packages=['schemer'],
+    packages=['pyschemer'],
     install_requires=['ERDot',
                       'pygraphviz',                     
                       'prettytable',                     
