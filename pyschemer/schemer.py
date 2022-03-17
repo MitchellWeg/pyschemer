@@ -18,7 +18,7 @@ class Database:
         self.cursor = conn.cursor()
         self.database_name = db_name
 
-    def draw(self, filename="out"):
+    def get_dot(self):
         self.get_tables()
         self.get_table_names()
         self.describe_tables()
@@ -26,6 +26,9 @@ class Database:
 
         dot_code = self.generate_dot_code(self.to_json())
 
+        return dot_code
+        
+    def draw(self, dot_code, filename='out'):
         G = pgv.AGraph(string=dot_code)
         schema_drawing = G.draw(path=None, format='jpeg', prog='dot')
 

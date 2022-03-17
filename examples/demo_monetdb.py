@@ -1,13 +1,15 @@
 import pymonetdb
-from schemer.schemer import Database
+
+import pyschemer
+from pyschemer.schemer import Database
 
 class Monet(Database):
     schema = ""
 
-    def draw(self, schema, filename="out"):
+    def get_dot(self, schema):
         self.schema = schema
 
-        return super().draw(filename)
+        return super().get_dot()
 
     def get_tables(self, q=None):
         return super().get_tables(q="SELECT name FROM sys.tables WHERE system=false")
@@ -42,8 +44,11 @@ def main():
     )
 
     db = Monet(conn=conn, db_name="foo")
-    db.draw("foo", "monet_out_foo")
-    db.draw("bar", "monet_out_bar")
+    foo_dot = db.get_dot("foo")
+    bar_dot = db.get_dot("bar")
+
+    db.draw(foo_dot, "monet_out_foo")
+    db.draw(bar_dot, "monet_out_bar")
 
 
 if __name__ == '__main__':
