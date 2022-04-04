@@ -1,6 +1,5 @@
 import pymonetdb
 
-import pyschemer
 from pyschemer.schemer import Database
 
 class Monet(Database):
