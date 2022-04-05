@@ -36,20 +36,42 @@ class Database:
             outfile.write(schema_drawing)
 
     def generate_dot_code(self, db_json) -> str:
+        """
+        Generates the dot code from the JSON.
+        
+        returns: the generated dot code
+        """
         json_loaded = json.loads(db_json)
         chunked_json = splitJSONIntoChuncks(json_loaded)
         string_gen = generateDotCode(chunked_json)
         return string_gen
 
     def get_tables(self, q="SHOW TABLES;"):
+        """
+        Fills the cursor with the table names.
+        It expects the names to be in an array like format:
+        eg. ['foo', 'bar'].
+    
+        returns: None
+        """
         self.cursor.execute(q)
 
     def get_table_names(self) -> [str]:
+        """
+        Parses the table names from the cursor.
+       
+        returns: a list of table names
+        """
         self.table_names = [t[0] for t in self.cursor.fetchall()]
 
         return self.table_names
 
     def describe_tables(self):
+        """
+        Describe the table.
+
+        returns: none, it sets the tables class variable.
+        """
         all_tables = {}
 
         for table in self.table_names:
