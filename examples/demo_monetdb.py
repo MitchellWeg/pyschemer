@@ -1,6 +1,5 @@
 import pymonetdb
 
-import pyschemer
 from pyschemer.schemer import Database
 
 class Monet(Database):
@@ -32,7 +31,10 @@ class Monet(Database):
         self.tables = all_tables
 
     def get_relationships(self, q=None):
-        return []
+        q = """
+        SELECT fk, fk_t, fk_c, pk_t, pk_c FROM describe_foreign_keys;
+        """
+        return super().get_relationships(q)
 
 def main():
     conn = pymonetdb.connect(

@@ -30,7 +30,7 @@ class Database:
         
     def draw(self, dot_code, filename='out'):
         G = pgv.AGraph(string=dot_code)
-        schema_drawing = G.draw(path=None, format='jpeg', prog='dot')
+        schema_drawing = G.draw(path=None, format='jpeg', prog='circo')
 
         with open(f'{filename}.jpg', 'wb') as outfile:
             outfile.write(schema_drawing)

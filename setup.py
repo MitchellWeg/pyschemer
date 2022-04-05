@@ -5,7 +5,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='pyschemer',
-    version='1.0.2',    
+    version='1.1.0',    
     description='A database visualization tool',
     url='https://github.com/MitchellWeg/schemer',
     author='Mitchell Weggemans',
@@ -20,7 +20,7 @@ setup(
                       ],
 
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: BSD License',  
         'Operating System :: POSIX :: Linux',        
