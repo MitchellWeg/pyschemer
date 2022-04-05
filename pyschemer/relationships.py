@@ -14,5 +14,12 @@ class Relationship:
         self.referenced_table_name = ref_table
         self.referenced_column_name = ref_column
 
+    def __repr__(self) -> str:
+        return "".join([
+            f"{self.table_name}:{self.column_name}",
+             " 1--* ",
+             f"{self.referenced_table_name}:{self.referenced_column_name}"
+        ])
+
     def to_json(self):
         return self.__repr__()
